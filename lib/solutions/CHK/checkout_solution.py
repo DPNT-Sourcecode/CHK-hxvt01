@@ -7,6 +7,7 @@ _ITEM_PRICES = {
     "C": 20,
     "D": 15,
     "E": 40,
+    "F": 10,
 }
 
 _UNIQUE_ITEMS = _ITEM_PRICES.keys()
@@ -30,11 +31,12 @@ class GetFreeOffer(SpecialOffer):
         self.free_item = free_item
 
 
-_prioritised_special_offers = [
+_PRIORITISED_SPECIAL_OFFERS = [
     MultiOffer(item="A", count_of_items=5, price=200),
     MultiOffer(item="A", count_of_items=3, price=130),
     GetFreeOffer(item="E", count_of_items=2, free_item="B"),
     MultiOffer(item="B", count_of_items=2, price=45),
+    MultiOffer(item="F", count_of_items=3, price=20),
 ]
 
 
@@ -62,7 +64,7 @@ class CheckoutSolution:
     def _calculate_special_offers(self, shopping_list: dict) -> tuple[int, dict]:
         remaining_shopping_list = shopping_list.copy()
         total = 0
-        for offer in _prioritised_special_offers:
+        for offer in _PRIORITISED_SPECIAL_OFFERS:
             if offer.item in remaining_shopping_list:
                 item, item_count = offer.item, remaining_shopping_list[offer.item]
 
@@ -89,6 +91,7 @@ class CheckoutSolution:
                     remaining_shopping_list[item] = remainder
 
         return total, remaining_shopping_list
+
 
 
 

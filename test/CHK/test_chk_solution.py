@@ -18,10 +18,12 @@ class TestCheckout:
 
     def test_checkout_complex_shopping_list(self) -> None:
         assert (
-            CheckoutSolution().checkout("AAAAABBCCCDDDEEE") == 200 + 30 + 60 + 45 + 120
+            CheckoutSolution().checkout("AAAAABBCCCDDDEEEFFF")
+            == 200 + 30 + 60 + 45 + 120 + 20
         )
         assert (
-            CheckoutSolution().checkout("AAACBBCCDADEEDEA") == 200 + 30 + 60 + 45 + 120
+            CheckoutSolution().checkout("AAAFCBBCCDFADEEFDEA")
+            == 200 + 30 + 60 + 45 + 120 + 20
         )
 
     def test_return_minus_one_on_illegal_input(self) -> None:
@@ -39,5 +41,12 @@ class TestCheckout:
         assert (
             CheckoutSolution().checkout("BBBBEEE") == 75 + 120
         )  # favor buy get B free
+
+    def test_checkout_buy_multiple_of_item_get_another_free(self) -> None:
+        assert CheckoutSolution().checkout("FFF") == 20
+        assert CheckoutSolution().checkout("FF") == 20
+        assert CheckoutSolution().checkout("FFFFF") == 40
+        assert CheckoutSolution().checkout("FFFFFF") == 40
+
 
 
