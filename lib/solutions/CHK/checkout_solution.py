@@ -56,10 +56,3 @@ class CheckoutSolution:
                     remaining_items[item] = remainder
 
         return total, remaining_items
-
-
-
-
-
-
-

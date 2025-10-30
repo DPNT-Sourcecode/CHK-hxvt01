@@ -23,5 +23,3 @@ class TestCheckout:
         assert CheckoutSolution().checkout("AABX") == -1
         assert CheckoutSolution().checkout("123") == -1
         assert CheckoutSolution().checkout("!@#") == -1
-
-
