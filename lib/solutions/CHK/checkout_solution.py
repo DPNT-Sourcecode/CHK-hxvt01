@@ -91,9 +91,3 @@ class CheckoutSolution:
                     remaining_shopping_list[item] = remainder
 
         return total, remaining_shopping_list
-
-
-
-
-
-

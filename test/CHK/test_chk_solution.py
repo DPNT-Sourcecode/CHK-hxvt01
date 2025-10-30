@@ -47,6 +47,3 @@ class TestCheckout:
         assert CheckoutSolution().checkout("FF") == 20
         assert CheckoutSolution().checkout("FFFFF") == 40
         assert CheckoutSolution().checkout("FFFFFF") == 40
-
-
-
