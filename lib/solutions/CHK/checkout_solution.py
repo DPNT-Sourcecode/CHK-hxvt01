@@ -84,13 +84,16 @@ class CheckoutSolution:
                             - (1 * num_special_offers_to_apply),
                         )
 
-                        total += offer.count_of_items * _item_prices[offer.item]
-                        remaining_shopping_list[offer.item] -= offer.count_of_items
+                        total += _item_prices[offer.item] * (
+                            remaining_shopping_list[offer.item] - remainder
+                        )
+                        remaining_shopping_list[offer.item] = remainder
                     else:
                         raise NotImplementedError(
                             f"Offertype {type(offer)} is not implemented."
                         )
 
         return total, remaining_shopping_list
+
 
 
