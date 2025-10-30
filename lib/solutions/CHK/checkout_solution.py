@@ -47,16 +47,25 @@ class CheckoutSolution:
     def _calculate_special_offers(self, item_counts: dict) -> tuple[int, dict]:
         remaining_items = item_counts.copy()
         total = 0
-        for item, count in item_counts.items():
-            if item in _prioritised_special_offers:
-                if count >= _prioritised_special_offers[item].count_of_items:
-                    num_special_offers, remainder = divmod(
-                        count, _prioritised_special_offers[item].count_of_items
-                    )
-                    total += (
-                        _prioritised_special_offers[item].price * num_special_offers
-                    )
+        for offer in _prioritised_special_offers:
+            if offer.item in remaining_items:
+                item, count = offer.item, remaining_items[offer.item]
+                if count >= offer.count_of_items:
+                    num_special_offers, remainder = divmod(count, offer.count_of_items)
+                    total += offer.price * num_special_offers
                     remaining_items[item] = remainder
 
+        # for item, count in item_counts.items():
+        #     if item in _prioritised_special_offers:
+        #         if count >= _prioritised_special_offers[item].count_of_items:
+        #             num_special_offers, remainder = divmod(
+        #                 count, _prioritised_special_offers[item].count_of_items
+        #             )
+        #             total += (
+        #                 _prioritised_special_offers[item].price * num_special_offers
+        #             )
+        #             remaining_items[item] = remainder
+
         return total, remaining_items
+
 
