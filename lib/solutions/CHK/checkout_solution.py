@@ -1,7 +1,7 @@
 from abc import ABC
 from collections import Counter
 
-_item_prices = {
+_ITEM_PRICES = {
     "A": 50,
     "B": 30,
     "C": 20,
@@ -9,7 +9,7 @@ _item_prices = {
     "E": 40,
 }
 
-_items = _item_prices.keys()
+_UNIQUE_ITEMS = _ITEM_PRICES.keys()
 
 
 class SpecialOffer(ABC):
@@ -48,14 +48,14 @@ class CheckoutSolution:
         total, remaining_shopping_list = self._calculate_special_offers(shopping_list)
 
         for item, count in remaining_shopping_list.items():
-            item_price = _item_prices[item]
+            item_price = _ITEM_PRICES[item]
             total += item_price * count
 
         return total
 
     def _skus_valid(self, skus: str) -> bool:
         for sku in skus:
-            if sku not in _items:
+            if sku not in _UNIQUE_ITEMS:
                 return False
         return True
 
@@ -67,33 +67,27 @@ class CheckoutSolution:
                 item, count = offer.item, remaining_shopping_list[offer.item]
 
                 if count >= offer.count_of_items:
+                    num_special_offers, remainder = divmod(count, offer.count_of_items)
                     if isinstance(offer, MultiOffer):
-                        num_special_offers, remainder = divmod(
-                            count, offer.count_of_items
-                        )
                         total += offer.price * num_special_offers
-                        remaining_shopping_list[item] = remainder
-
                     elif isinstance(offer, GetFreeOffer):
-                        num_special_offers_to_apply, remainder = divmod(
-                            count, offer.count_of_items
-                        )
                         remaining_shopping_list[offer.free_item] = max(
                             0,
                             remaining_shopping_list[offer.free_item]
-                            - (1 * num_special_offers_to_apply),
+                            - (1 * num_special_offers),
                         )
 
-                        total += _item_prices[offer.item] * (
+                        total += _ITEM_PRICES[offer.item] * (
                             remaining_shopping_list[offer.item] - remainder
                         )
-                        remaining_shopping_list[offer.item] = remainder
                     else:
                         raise NotImplementedError(
                             f"Offertype {type(offer)} is not implemented."
                         )
+                    remaining_shopping_list[item] = remainder
 
         return total, remaining_shopping_list
+
 
 
 
