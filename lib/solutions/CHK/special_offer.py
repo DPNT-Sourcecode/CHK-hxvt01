@@ -42,7 +42,3 @@ PRIORITISED_SPECIAL_OFFERS = [
     MultiBuyOffer(item="V", num_items_to_qualify=3, price=130),
     MultiBuyOffer(item="V", num_items_to_qualify=2, price=90),
 ]
-
-
-
-
