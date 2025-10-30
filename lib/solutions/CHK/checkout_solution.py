@@ -30,30 +30,36 @@ class CheckoutSolution:
         return True
 
     def _calculate_special_offers(self, shopping_list: dict) -> tuple[int, dict]:
-        remaining_shop_list = shopping_list.copy()
+        remain_shop_list = shopping_list.copy()
         total = 0
         for offer in PRIORITISED_SPECIAL_OFFERS:
-            if offer.item in remaining_shop_list:
-                item, item_count = offer.item, remaining_shop_list[offer.item]
+            if offer.item in remain_shop_list:
+                item, item_count = offer.item, remain_shop_list[offer.item]
 
                 num_special_offers, remainder = divmod(
                     item_count, offer.num_items_to_qualify
                 )
-                if isinstance(offer, MultiBuyOffer):
-                    total += offer.price * num_special_offers
-                elif isinstance(offer, BuyAndGetFreeOffer):
-                    remaining_shop_list[offer.free_item] = max(
-                        0,
-                        remaining_shop_list[offer.free_item] - (1 * num_special_offers),
-                    )
+                if num_special_offers:
+                    print(f"Applying special offer {num_special_offers} times: {offer}")
+                    if isinstance(offer, MultiBuyOffer):
+                        total += offer.price * num_special_offers
+                    elif isinstance(offer, BuyAndGetFreeOffer):
+                        num_free_items = 1 * num_special_offers
+                        remain_shop_list[offer.free_item] = max(
+                            0,
+                            remain_shop_list[offer.free_item] - num_free_items,
+                        )
 
-                    total += ITEM_PRICES[item] * (remaining_shop_list[item] - remainder)
-                else:
-                    raise NotImplementedError(
-                        f"Offertype {type(offer)} is not implemented."
-                    )
-                remaining_shop_list[item] = remainder
+                        total += ITEM_PRICES[item] * (
+                            remain_shop_list[item] - remainder
+                        )
+                    else:
+                        raise NotImplementedError(
+                            f"Offertype {type(offer)} is not implemented."
+                        )
+                remain_shop_list[item] = remainder
 
-        return total, remaining_shop_list
+        return total, remain_shop_list
+
 
 
