@@ -3,9 +3,9 @@ from solutions.CHK.checkout_solution import CheckoutSolution
 
 class TestCheckout:
     def test_checkout_one_of_each_order_does_not_matter(self) -> None:
-        assert CheckoutSolution().checkout("ABCD") == 50 + 30 + 20 + 15
-        assert CheckoutSolution().checkout("DCBA") == 50 + 30 + 20 + 15
-        assert CheckoutSolution().checkout("DBCA") == 50 + 30 + 20 + 15
+        assert CheckoutSolution().checkout("ABCDL") == 50 + 30 + 20 + 15 + 90
+        assert CheckoutSolution().checkout("LDCBA") == 50 + 30 + 20 + 15 + 90
+        assert CheckoutSolution().checkout("LDBCA") == 50 + 30 + 20 + 15 + 90
 
     def test_checkout_special_offers_order_does_not_matter(self) -> None:
         assert CheckoutSolution().checkout("AAABB") == 130 + 45
@@ -47,4 +47,5 @@ class TestCheckout:
         assert CheckoutSolution().checkout("FF") == 20
         assert CheckoutSolution().checkout("FFFFF") == 40
         assert CheckoutSolution().checkout("FFFFFF") == 40
+
 

@@ -41,25 +41,24 @@ class CheckoutSolution:
                 )
                 if num_special_offers:
                     print(f"Applying special offer {num_special_offers} times: {offer}")
-                    if isinstance(offer, MultiBuyOffer):
-                        total += offer.price * num_special_offers
-                    elif isinstance(offer, BuyAndGetFreeOffer):
-                        num_free_items = 1 * num_special_offers
-                        remain_shop_list[offer.free_item] = max(
-                            0,
-                            remain_shop_list[offer.free_item] - num_free_items,
-                        )
+                if isinstance(offer, MultiBuyOffer):
+                    total += offer.price * num_special_offers
+                elif isinstance(offer, BuyAndGetFreeOffer):
+                    num_free_items = 1 * num_special_offers
+                    remain_shop_list[offer.free_item] = max(
+                        0,
+                        remain_shop_list[offer.free_item] - num_free_items,
+                    )
 
-                        total += ITEM_PRICES[item] * (
-                            remain_shop_list[item] - remainder
-                        )
-                    else:
-                        raise NotImplementedError(
-                            f"Offertype {type(offer)} is not implemented."
-                        )
+                    total += ITEM_PRICES[item] * (remain_shop_list[item] - remainder)
+                else:
+                    raise NotImplementedError(
+                        f"Offertype {type(offer)} is not implemented."
+                    )
                 remain_shop_list[item] = remainder
 
         return total, remain_shop_list
+
 
 
 
