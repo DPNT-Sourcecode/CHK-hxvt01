@@ -88,11 +88,3 @@ class CheckoutSolution:
                         )
 
         return total, remaining_items
-
-
-
-
-
-
-
-
