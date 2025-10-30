@@ -9,6 +9,7 @@ _item_prices = {
 
 _items = _item_prices.keys()
 
+
 class SpecialOffer:
     def __init__(self, count_of_items: int, price: int) -> None:
         self.count_of_items = count_of_items
@@ -19,7 +20,6 @@ _special_offers = {
     "A": SpecialOffer(count_of_items=3, price=130),
     "B": SpecialOffer(count_of_items=2, price=45),
 }
-
 
 
 class CheckoutSolution:
@@ -33,8 +33,11 @@ class CheckoutSolution:
         for item, count in item_counts.items():
             if item in _special_offers:
                 if count >= _special_offers[item].count_of_items:
-                    ...
-                    # total +=
+                    num_special_offers, remainder = divmod(
+                        count, _special_offers[item].count_of_items
+                    )
+                    total += _special_offers[item].price * num_special_offers
+                    item_counts[item] = remainder
 
         # Calculate remainders
         for item, count in item_counts.items():
@@ -48,6 +51,7 @@ class CheckoutSolution:
             if sku not in _items:
                 return False
         return True
+
 
 
 
