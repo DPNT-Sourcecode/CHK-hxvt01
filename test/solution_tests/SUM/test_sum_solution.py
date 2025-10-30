@@ -7,5 +7,3 @@ class TestSum:
 
     def test_sum_large_numbers(self) -> None:
         assert SumSolution().compute(100, 99) == 199
-
-
