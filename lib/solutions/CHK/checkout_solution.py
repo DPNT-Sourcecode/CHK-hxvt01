@@ -1,4 +1,4 @@
-from collections import Counter
+from collections import Counter, defaultdict
 
 _item_prices = {
     "A": 50,
@@ -29,15 +29,15 @@ class CheckoutSolution:
             return -1
 
         item_counts = Counter(skus)
-        total = 0
-        for item, count in item_counts.items():
-            if item in _special_offers:
-                if count >= _special_offers[item].count_of_items:
-                    num_special_offers, remainder = divmod(
-                        count, _special_offers[item].count_of_items
-                    )
-                    total += _special_offers[item].price * num_special_offers
-                    item_counts[item] = remainder
+        total, remaining_items = self._calculate_special_offers(item_counts)
+        # for item, count in item_counts.items():
+        #     if item in _special_offers:
+        #         if count >= _special_offers[item].count_of_items:
+        #             num_special_offers, remainder = divmod(
+        #                 count, _special_offers[item].count_of_items
+        #             )
+        #             total += _special_offers[item].price * num_special_offers
+        #             item_counts[item] = remainder
 
         # Calculate remainders
         for item, count in item_counts.items():
@@ -51,6 +51,21 @@ class CheckoutSolution:
             if sku not in _items:
                 return False
         return True
+
+    def _calculate_special_offers(self, item_counts: dict) -> tuple[int, dict]:
+        remaining_items = defaultdict(int)
+        total = 0
+        for item, count in item_counts.items():
+            if item in _special_offers:
+                if count >= _special_offers[item].count_of_items:
+                    num_special_offers, remainder = divmod(
+                        count, _special_offers[item].count_of_items
+                    )
+                    total += _special_offers[item].price * num_special_offers
+                    remaining_items[item] = remainder
+
+        return total, {dict(item_counts), *remaining_items}
+
 
 
 
