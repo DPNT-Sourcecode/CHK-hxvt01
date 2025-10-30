@@ -2,5 +2,6 @@ from solutions.CHK.hello_solution import CheckoutSolution
 
 
 class TestCheckout:
-    def test_checkout(self) -> None:
-        assert CheckoutSolution().checkout() is None
+    def test_checkout_one_of_each(self) -> None:
+        assert CheckoutSolution().checkout("ABCD") == 
+
