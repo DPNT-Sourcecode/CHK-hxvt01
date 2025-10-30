@@ -15,7 +15,7 @@ _UNIQUE_ITEMS = _ITEM_PRICES.keys()
 class SpecialOffer(ABC):
     def __init__(self, item: str, count_of_items: int) -> None:
         self.item = item
-        self.count_of_items = count_of_items
+        self.num_of_items_to_qualify = count_of_items
 
 
 class MultiOffer(SpecialOffer):
@@ -64,10 +64,12 @@ class CheckoutSolution:
         total = 0
         for offer in _prioritised_special_offers:
             if offer.item in remaining_shopping_list:
-                item, count = offer.item, remaining_shopping_list[offer.item]
+                item, item_count = offer.item, remaining_shopping_list[offer.item]
 
-                if count >= offer.count_of_items:
-                    num_special_offers, remainder = divmod(count, offer.count_of_items)
+                if item_count >= offer.num_of_items_to_qualify:
+                    num_special_offers, remainder = divmod(
+                        item_count, offer.num_of_items_to_qualify
+                    )
                     if isinstance(offer, MultiOffer):
                         total += offer.price * num_special_offers
                     elif isinstance(offer, GetFreeOffer):
@@ -77,8 +79,8 @@ class CheckoutSolution:
                             - (1 * num_special_offers),
                         )
 
-                        total += _ITEM_PRICES[offer.item] * (
-                            remaining_shopping_list[offer.item] - remainder
+                        total += _ITEM_PRICES[item] * (
+                            remaining_shopping_list[item] - remainder
                         )
                     else:
                         raise NotImplementedError(
@@ -87,6 +89,7 @@ class CheckoutSolution:
                     remaining_shopping_list[item] = remainder
 
         return total, remaining_shopping_list
+
 
 
 
