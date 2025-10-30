@@ -11,15 +11,16 @@ _items = _item_prices.keys()
 
 
 class SpecialOffer:
-    def __init__(self, count_of_items: int, price: int) -> None:
+    def __init__(self, item: str, count_of_items: int, price: int) -> None:
+        self.item = item
         self.count_of_items = count_of_items
         self.price = price
 
 
-_special_offers = {
-    "A": SpecialOffer(count_of_items=3, price=130),
-    "B": SpecialOffer(count_of_items=2, price=45),
-}
+_prioritised_special_offers = [
+    SpecialOffer(item="A", count_of_items=3, price=130),
+    SpecialOffer(item="B", count_of_items=2, price=45),
+]
 
 
 class CheckoutSolution:
@@ -47,12 +48,15 @@ class CheckoutSolution:
         remaining_items = item_counts.copy()
         total = 0
         for item, count in item_counts.items():
-            if item in _special_offers:
-                if count >= _special_offers[item].count_of_items:
+            if item in _prioritised_special_offers:
+                if count >= _prioritised_special_offers[item].count_of_items:
                     num_special_offers, remainder = divmod(
-                        count, _special_offers[item].count_of_items
+                        count, _prioritised_special_offers[item].count_of_items
                     )
-                    total += _special_offers[item].price * num_special_offers
+                    total += (
+                        _prioritised_special_offers[item].price * num_special_offers
+                    )
                     remaining_items[item] = remainder
 
         return total, remaining_items
+
