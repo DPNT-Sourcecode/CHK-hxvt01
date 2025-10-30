@@ -33,7 +33,7 @@ class GetFreeOffer(SpecialOffer):
 _prioritised_special_offers = [
     MultiOffer(item="A", count_of_items=5, price=200),
     MultiOffer(item="A", count_of_items=3, price=130),
-    GetFreeOffer(item="E", count_of_items=3, free_item="B"),
+    GetFreeOffer(item="E", count_of_items=2, free_item="B"),
     MultiOffer(item="B", count_of_items=2, price=45),
 ]
 
@@ -74,7 +74,7 @@ class CheckoutSolution:
                         total += offer.price * num_special_offers
                         remaining_items[item] = remainder
                     elif isinstance(offer, GetFreeOffer):
-                        remaining_items[offer.free_item] -= 1
+                        remaining_items[offer.free_item] -= 1  # TODO - fix
                         total += offer.count_of_items * _item_prices[offer.item]
                         remaining_items[offer.item] -= offer.count_of_items
                     else:
@@ -83,6 +83,7 @@ class CheckoutSolution:
                         )
 
         return total, remaining_items
+
 
 
 
