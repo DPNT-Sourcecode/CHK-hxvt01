@@ -1,4 +1,4 @@
-from solutions.CHK.hello_solution import CheckoutSolution
+from solutions.CHK.checkout_solution import CheckoutSolution
 
 
 class TestCheckout:
@@ -18,4 +18,10 @@ class TestCheckout:
 
     def test_checkout_complex_order(self) -> None:
         assert CheckoutSolution().checkout("AAAAABBCCCDDD") == 130 + 100 + 45 + 60 + 45
+
+    def test_return_minus_one_on_illegal_input(self) -> None:
+        assert CheckoutSolution().checkout("AABX") == -1
+        assert CheckoutSolution().checkout("123") == -1
+        assert CheckoutSolution().checkout("!@#") == -1
+
 
