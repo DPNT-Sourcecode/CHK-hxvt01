@@ -8,7 +8,3 @@ class HelloSolution:
             raise ValueError("friend_name must be less than 100")
 
         return f"Hello, {friend_name}!"
-
-
-
-
