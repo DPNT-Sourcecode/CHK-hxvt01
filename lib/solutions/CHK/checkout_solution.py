@@ -1,3 +1,4 @@
+from abc import ABC
 from collections import Counter
 
 _item_prices = {
@@ -10,7 +11,11 @@ _item_prices = {
 _items = _item_prices.keys()
 
 
-class SpecialOffer:
+class SpecialOffer(ABC):
+    pass
+
+
+class MultiOffer(SpecialOffer):
     def __init__(self, item: str, count_of_items: int, price: int) -> None:
         self.item = item
         self.count_of_items = count_of_items
@@ -50,22 +55,13 @@ class CheckoutSolution:
         for offer in _prioritised_special_offers:
             if offer.item in remaining_items:
                 item, count = offer.item, remaining_items[offer.item]
+
                 if count >= offer.count_of_items:
                     num_special_offers, remainder = divmod(count, offer.count_of_items)
                     total += offer.price * num_special_offers
                     remaining_items[item] = remainder
 
-        # for item, count in item_counts.items():
-        #     if item in _prioritised_special_offers:
-        #         if count >= _prioritised_special_offers[item].count_of_items:
-        #             num_special_offers, remainder = divmod(
-        #                 count, _prioritised_special_offers[item].count_of_items
-        #             )
-        #             total += (
-        #                 _prioritised_special_offers[item].price * num_special_offers
-        #             )
-        #             remaining_items[item] = remainder
-
         return total, remaining_items
+
 
 
