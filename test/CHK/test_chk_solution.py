@@ -27,7 +27,7 @@ class TestCheckout:
         )
 
     def test_return_minus_one_on_illegal_input(self) -> None:
-        assert CheckoutSolution().checkout("AABX") == -1
+        assert CheckoutSolution().checkout("AAB2") == -1
         assert CheckoutSolution().checkout("123") == -1
         assert CheckoutSolution().checkout("!@#") == -1
 
@@ -47,3 +47,4 @@ class TestCheckout:
         assert CheckoutSolution().checkout("FF") == 20
         assert CheckoutSolution().checkout("FFFFF") == 40
         assert CheckoutSolution().checkout("FFFFFF") == 40
+

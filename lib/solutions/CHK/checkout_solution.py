@@ -1,6 +1,11 @@
 from collections import Counter
 
 from lib.solutions.CHK.item_price_catalogue import ITEM_PRICES, UNIQUE_ITEMS
+from lib.solutions.CHK.special_offer import (
+    PRIORITISED_SPECIAL_OFFERS,
+    MultiBuyOffer,
+    BuyAndGetFreeOffer,
+)
 
 
 class CheckoutSolution:
@@ -27,16 +32,16 @@ class CheckoutSolution:
     def _calculate_special_offers(self, shopping_list: dict) -> tuple[int, dict]:
         remaining_shop_list = shopping_list.copy()
         total = 0
-        for offer in _PRIORITISED_SPECIAL_OFFERS:
+        for offer in PRIORITISED_SPECIAL_OFFERS:
             if offer.item in remaining_shop_list:
                 item, item_count = offer.item, remaining_shop_list[offer.item]
 
                 num_special_offers, remainder = divmod(
                     item_count, offer.num_items_to_qualify
                 )
-                if isinstance(offer, MultiOffer):
+                if isinstance(offer, MultiBuyOffer):
                     total += offer.price * num_special_offers
-                elif isinstance(offer, GetFreeOffer):
+                elif isinstance(offer, BuyAndGetFreeOffer):
                     remaining_shop_list[offer.free_item] = max(
                         0,
                         remaining_shop_list[offer.free_item] - (1 * num_special_offers),
@@ -50,4 +55,5 @@ class CheckoutSolution:
                 remaining_shop_list[item] = remainder
 
         return total, remaining_shop_list
+
 
