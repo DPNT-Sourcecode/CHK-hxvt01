@@ -44,10 +44,10 @@ class CheckoutSolution:
         if not self._skus_valid(skus):
             return -1
 
-        item_counts = Counter(skus)
-        total, remaining_items = self._calculate_special_offers(item_counts)
+        shopping_list = Counter(skus)
+        total, remaining_shopping_list = self._calculate_special_offers(shopping_list)
 
-        for item, count in remaining_items.items():
+        for item, count in remaining_shopping_list.items():
             item_price = _item_prices[item]
             total += item_price * count
 
@@ -59,12 +59,12 @@ class CheckoutSolution:
                 return False
         return True
 
-    def _calculate_special_offers(self, item_counts: dict) -> tuple[int, dict]:
-        remaining_items = item_counts.copy()
+    def _calculate_special_offers(self, shopping_list: dict) -> tuple[int, dict]:
+        remaining_shopping_list = shopping_list.copy()
         total = 0
         for offer in _prioritised_special_offers:
-            if offer.item in remaining_items:
-                item, count = offer.item, remaining_items[offer.item]
+            if offer.item in remaining_shopping_list:
+                item, count = offer.item, remaining_shopping_list[offer.item]
 
                 if count >= offer.count_of_items:
                     if isinstance(offer, MultiOffer):
@@ -72,19 +72,20 @@ class CheckoutSolution:
                             count, offer.count_of_items
                         )
                         total += offer.price * num_special_offers
-                        remaining_items[item] = remainder
+                        remaining_shopping_list[item] = remainder
                     elif isinstance(offer, GetFreeOffer):
                         remainder_after_given_for_free = max(
-                            0, remaining_items[offer.free_item] - 1
+                            0, remaining_shopping_list[offer.free_item] - 1
                         )
-                        remaining_items[offer.free_item] -= (
+                        remaining_shopping_list[offer.free_item] -= (
                             remainder_after_given_for_free
                         )
                         total += offer.count_of_items * _item_prices[offer.item]
-                        remaining_items[offer.item] -= offer.count_of_items
+                        remaining_shopping_list[offer.item] -= offer.count_of_items
                     else:
                         raise NotImplementedError(
                             f"Offertype {type(offer)} is not implemented."
                         )
 
-        return total, remaining_items
+        return total, remaining_shopping_list
+

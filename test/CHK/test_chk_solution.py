@@ -25,7 +25,12 @@ class TestCheckout:
         assert CheckoutSolution().checkout("123") == -1
         assert CheckoutSolution().checkout("!@#") == -1
 
+    def test_buy_get_free_offer_when_free_item_not_present(self) -> None:
+        assert CheckoutSolution().checkout("EE") == 80
+        assert CheckoutSolution().checkout("EEEE") == 160
+
     def test_checkout_favor_customer_when_applying_offers(self) -> None:
-        # assert CheckoutSolution().checkout("AAAAAA") == 200 + 50  # favour 5A for 200
-        # assert CheckoutSolution().checkout("BBEE") == 80 + 30  # favour 1 B for free
+        assert CheckoutSolution().checkout("AAAAAA") == 200 + 50  # favour 5A for 200
+        assert CheckoutSolution().checkout("BBEE") == 80 + 30  # favour 1 B for free
         assert CheckoutSolution().checkout("BBBBEEE") == 75 + 120
+
