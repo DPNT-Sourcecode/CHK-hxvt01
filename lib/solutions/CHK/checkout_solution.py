@@ -1,4 +1,4 @@
-from collections import Counter, defaultdict
+from collections import Counter
 
 _item_prices = {
     "A": 50,
@@ -30,17 +30,8 @@ class CheckoutSolution:
 
         item_counts = Counter(skus)
         total, remaining_items = self._calculate_special_offers(item_counts)
-        # for item, count in item_counts.items():
-        #     if item in _special_offers:
-        #         if count >= _special_offers[item].count_of_items:
-        #             num_special_offers, remainder = divmod(
-        #                 count, _special_offers[item].count_of_items
-        #             )
-        #             total += _special_offers[item].price * num_special_offers
-        #             item_counts[item] = remainder
 
-        # Calculate remainders
-        for item, count in item_counts.items():
+        for item, count in remaining_items.items():
             item_price = _item_prices[item]
             total += item_price * count
 
@@ -53,7 +44,7 @@ class CheckoutSolution:
         return True
 
     def _calculate_special_offers(self, item_counts: dict) -> tuple[int, dict]:
-        remaining_items = defaultdict(int)
+        remaining_items = item_counts.copy()
         total = 0
         for item, count in item_counts.items():
             if item in _special_offers:
@@ -64,7 +55,8 @@ class CheckoutSolution:
                     total += _special_offers[item].price * num_special_offers
                     remaining_items[item] = remainder
 
-        return total, {dict(item_counts), *remaining_items}
+        return total, remaining_items
+
 
 
 
