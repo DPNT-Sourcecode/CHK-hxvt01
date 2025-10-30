@@ -18,12 +18,12 @@ class TestCheckout:
 
     def test_checkout_complex_shopping_list(self) -> None:
         assert (
-            CheckoutSolution().checkout("AAAAABBCCCDDDEEEFFF")
-            == 200 + 30 + 60 + 45 + 120 + 20
+            CheckoutSolution().checkout("AAAAABBCCCDDDEEEFFFVVVRRRQRRR")
+            == 200 + 30 + 60 + 45 + 120 + 20 + 130 + 150 + 150
         )
         assert (
-            CheckoutSolution().checkout("AAAFCBBCCDFADEEFDEA")
-            == 200 + 30 + 60 + 45 + 120 + 20
+            CheckoutSolution().checkout("ARARAVFCRBVBQCCRDVFRADEREFDEA")
+            == 200 + 30 + 60 + 45 + 120 + 20 + 130 + 150 + 150
         )
 
     def test_return_minus_one_on_illegal_input(self) -> None:

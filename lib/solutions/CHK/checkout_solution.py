@@ -1,7 +1,7 @@
 from collections import Counter
 
-from lib.solutions.CHK.item_price_catalogue import ITEM_PRICES, UNIQUE_ITEMS
-from lib.solutions.CHK.special_offer import (
+from solutions.CHK.item_price_catalogue import ITEM_PRICES, UNIQUE_ITEMS
+from solutions.CHK.special_offer import (
     PRIORITISED_SPECIAL_OFFERS,
     MultiBuyOffer,
     BuyAndGetFreeOffer,
@@ -40,7 +40,9 @@ class CheckoutSolution:
                     item_count, offer.num_items_to_qualify
                 )
                 if num_times_apply_offer:
-                    print(f"Applying special offer {num_times_apply_offer} times: {offer}")
+                    print(
+                        f"Applying special offer {num_times_apply_offer} times: {offer}"
+                    )
 
                 if isinstance(offer, MultiBuyOffer):
                     total += offer.price * num_times_apply_offer
@@ -59,6 +61,7 @@ class CheckoutSolution:
                 remain_shop_list[item] = remainder
 
         return total, remain_shop_list
+
 
 
 
