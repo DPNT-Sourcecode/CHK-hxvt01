@@ -1,4 +1,4 @@
-from abc import ABC
+from abc import ABC, abstractproperty
 from collections import Counter
 
 _item_prices = {
@@ -12,7 +12,11 @@ _items = _item_prices.keys()
 
 
 class SpecialOffer(ABC):
-    pass
+
+    @property
+    @abstractproperty
+    def item(self) -> str:
+        pass
 
 
 class MultiOffer(SpecialOffer):
@@ -22,9 +26,18 @@ class MultiOffer(SpecialOffer):
         self.price = price
 
 
+class GetFreeOffer(SpecialOffer):
+    def __init__(self, item: str, count_of_items: int, free_item: str) -> None:
+        self.item = item
+        self.count_of_items = count_of_items
+        self.free_item = free_item
+
+
 _prioritised_special_offers = [
-    SpecialOffer(item="A", count_of_items=3, price=130),
-    SpecialOffer(item="B", count_of_items=2, price=45),
+    MultiOffer(item="A", count_of_items=5, price=200),
+    MultiOffer(item="A", count_of_items=3, price=130),
+    GetFreeOffer(item="E", count_of_items=3, free_item="B"),
+    MultiOffer(item="B", count_of_items=2, price=45),
 ]
 
 
@@ -62,6 +75,7 @@ class CheckoutSolution:
                     remaining_items[item] = remainder
 
         return total, remaining_items
+
 
 
 
