@@ -73,13 +73,17 @@ class CheckoutSolution:
                         )
                         total += offer.price * num_special_offers
                         remaining_shopping_list[item] = remainder
+
                     elif isinstance(offer, GetFreeOffer):
-                        remainder_after_given_for_free = max(
-                            0, remaining_shopping_list[offer.free_item] - 1
+                        num_special_offers_to_apply, remainder = divmod(
+                            count, offer.count_of_items
                         )
-                        remaining_shopping_list[offer.free_item] -= (
-                            remainder_after_given_for_free
+                        remaining_shopping_list[offer.free_item] = max(
+                            0,
+                            remaining_shopping_list[offer.free_item]
+                            - (1 * num_special_offers_to_apply),
                         )
+
                         total += offer.count_of_items * _item_prices[offer.item]
                         remaining_shopping_list[offer.item] -= offer.count_of_items
                     else:
@@ -88,4 +92,5 @@ class CheckoutSolution:
                         )
 
         return total, remaining_shopping_list
+
 
