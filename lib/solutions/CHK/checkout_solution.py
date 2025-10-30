@@ -6,6 +6,7 @@ _item_prices = {
     "B": 30,
     "C": 20,
     "D": 15,
+    "E": 40,
 }
 
 _items = _item_prices.keys()
@@ -66,11 +67,23 @@ class CheckoutSolution:
                 item, count = offer.item, remaining_items[offer.item]
 
                 if count >= offer.count_of_items:
-                    num_special_offers, remainder = divmod(count, offer.count_of_items)
-                    total += offer.price * num_special_offers
-                    remaining_items[item] = remainder
+                    if isinstance(offer, MultiOffer):
+                        num_special_offers, remainder = divmod(
+                            count, offer.count_of_items
+                        )
+                        total += offer.price * num_special_offers
+                        remaining_items[item] = remainder
+                    elif isinstance(offer, GetFreeOffer):
+                        remaining_items[offer.free_item] -= 1
+                        total += offer.count_of_items * _item_prices[offer.item]
+                        remaining_items[offer.item] -= offer.count_of_items
+                    else:
+                        raise NotImplementedError(
+                            f"Offertype {type(offer)} is not implemented."
+                        )
 
         return total, remaining_items
+
 
 
 
