@@ -36,15 +36,16 @@ class CheckoutSolution:
             if offer.item in remain_shop_list:
                 item, item_count = offer.item, remain_shop_list[offer.item]
 
-                num_special_offers, remainder = divmod(
+                num_times_apply_offer, remainder = divmod(
                     item_count, offer.num_items_to_qualify
                 )
-                if num_special_offers:
-                    print(f"Applying special offer {num_special_offers} times: {offer}")
+                if num_times_apply_offer:
+                    print(f"Applying special offer {num_times_apply_offer} times: {offer}")
+
                 if isinstance(offer, MultiBuyOffer):
-                    total += offer.price * num_special_offers
+                    total += offer.price * num_times_apply_offer
                 elif isinstance(offer, BuyAndGetFreeOffer):
-                    num_free_items = 1 * num_special_offers
+                    num_free_items = 1 * num_times_apply_offer
                     remain_shop_list[offer.free_item] = max(
                         0,
                         remain_shop_list[offer.free_item] - num_free_items,
@@ -58,6 +59,7 @@ class CheckoutSolution:
                 remain_shop_list[item] = remainder
 
         return total, remain_shop_list
+
 
 
 
