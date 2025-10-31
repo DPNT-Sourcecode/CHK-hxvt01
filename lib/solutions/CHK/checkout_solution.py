@@ -114,8 +114,24 @@ class CheckoutSolution:
     def _apply_group_discount_offer(
         self, offer: GroupDiscountOffer, shopping_list: dict[str, int]
     ) -> int:
+        total = 0
         while shopping_list != {}:
-            is_needed = offer.num_items_to_qualify
-            group_of_i = defaultdict(int)
+            remaining_items_needed = offer.num_items_to_qualify
+            group_of_i = {}
+
+            for item in offer.items:
+                if item in shopping_list:
+                    num_i_to_include = min(remaining_items_needed, shopping_list[item])
+                    group_of_i[item] = num_i_to_include
+                    remaining_items_needed -= num_i_to_include
+
+                    if remaining_items_needed == 0:
+                        print(f"Applying special offer: {offer}")
+                        for disc_item, disc_item_count in group_of_i.items():
+                            pass
+                        total += offer.price
+
+        
+        return total
 
 
