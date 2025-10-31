@@ -24,34 +24,33 @@ class TestCheckout:
             == 50 + 30 + 20 + 15 + 90
         )
 
+    @pytest.mark.parametrize("skus", ["AAABB", "ABABA", "BBAAA"])
     def test_checkout_multi_buy_offer(
-        self, item_prices: ItemPriceCatalogue, special_offers: list[SpecialOffer]
+        self,
+        item_prices: ItemPriceCatalogue,
+        special_offers: list[SpecialOffer],
+        skus: str,
     ) -> None:
         assert (
-            CheckoutSolution().checkout("AAABB", item_prices, special_offers)
-            == 130 + 45
-        )
-        assert (
-            CheckoutSolution().checkout("ABABA", item_prices, special_offers)
-            == 130 + 45
-        )
-        assert (
-            CheckoutSolution().checkout("BBAAA", item_prices, special_offers)
-            == 130 + 45
+            CheckoutSolution().checkout(skus, item_prices, special_offers) == 130 + 45
         )
 
-    def test_checkout_multiple_special_offers_with_remainder(
-        self, item_prices: ItemPriceCatalogue, special_offers: list[SpecialOffer]
+    @pytest.mark.parametrize(
+        "skus,total", [("AAAAAAAA", 200 + 130), ("BBBBBBB", 45 + 45 + 45 + 30)]
+    )
+    def test_checkout_multi_buy_offer_with_remainder(
+        self,
+        item_prices: ItemPriceCatalogue,
+        special_offers: list[SpecialOffer],
+        skus: str,
+        total: int,
     ) -> None:
-        assert (
-            CheckoutSolution().checkout("AAAAAAAA", item_prices, special_offers)
-            == 200 + 130
-        )
-        assert (
-            CheckoutSolution().checkout("BBBBBBB", item_prices, special_offers)
-            == 45 + 45 + 45 + 30
-        )
+        assert CheckoutSolution().checkout(skus, item_prices, special_offers) == total
 
+    @pytest.mark.parametrize(
+        "skus",
+        ["AAAAABBCCCDDDEEEFFFVVVRRRQRRRXYZ", "ARARAVFCZRBVXBQCCRYDVFRADEREFDEA"],
+    )
     def test_checkout_complex_shopping_list(
         self, item_prices: ItemPriceCatalogue, special_offers: list[SpecialOffer]
     ) -> None:
@@ -167,5 +166,6 @@ def special_offers() -> list[SpecialOffer]:
         MultiBuyOffer(item="V", num_items_to_qualify=2, price=90),
         GroupDiscountOffer(items=["Z", "Y", "X"], num_items_to_qualify=3, price=45),
     ]
+
 
 
