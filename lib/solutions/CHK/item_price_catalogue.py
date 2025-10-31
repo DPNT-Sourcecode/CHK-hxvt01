@@ -1,4 +1,4 @@
-ItemPriceCatalogue = ItemPriceCatalogue
+ItemPriceCatalogue = dict[str, int]
 
 
 ITEM_PRICES = {
@@ -30,4 +30,5 @@ ITEM_PRICES = {
     "Z": 50,
 }
 UNIQUE_ITEMS = ITEM_PRICES.keys()
+
 

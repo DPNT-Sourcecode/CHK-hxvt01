@@ -1,101 +1,92 @@
 import pytest
 from solutions.CHK.checkout_solution import CheckoutSolution
-
-from lib.solutions.CHK.item_price_catalogue import ItemPriceCatalogue
+from solutions.CHK.item_price_catalogue import ItemPriceCatalogue
 
 
 class TestCheckout:
     def test_checkout_one_of_each_order_does_not_matter(
-        self, item_price_catalogue: ItemPriceCatalogue
+        self, item_prices: ItemPriceCatalogue
     ) -> None:
         assert (
-            CheckoutSolution().checkout("ABCDL", item_price_catalogue)
-            == 50 + 30 + 20 + 15 + 90
+            CheckoutSolution().checkout("ABCDL", item_prices) == 50 + 30 + 20 + 15 + 90
         )
         assert (
-            CheckoutSolution().checkout("LDCBA", item_price_catalogue)
-            == 50 + 30 + 20 + 15 + 90
+            CheckoutSolution().checkout("LDCBA", item_prices) == 50 + 30 + 20 + 15 + 90
         )
         assert (
-            CheckoutSolution().checkout("LDBCA", item_price_catalogue)
-            == 50 + 30 + 20 + 15 + 90
+            CheckoutSolution().checkout("LDBCA", item_prices) == 50 + 30 + 20 + 15 + 90
         )
 
     def test_checkout_special_offers_order_does_not_matter(
-        self, item_price_catalogue: ItemPriceCatalogue
+        self, item_prices: ItemPriceCatalogue
     ) -> None:
-        assert CheckoutSolution().checkout("AAABB", item_price_catalogue) == 130 + 45
-        assert CheckoutSolution().checkout("ABABA", item_price_catalogue) == 130 + 45
-        assert CheckoutSolution().checkout("BBAAA", item_price_catalogue) == 130 + 45
+        assert CheckoutSolution().checkout("AAABB", item_prices) == 130 + 45
+        assert CheckoutSolution().checkout("ABABA", item_prices) == 130 + 45
+        assert CheckoutSolution().checkout("BBAAA", item_prices) == 130 + 45
 
     def test_checkout_multiple_special_offers_with_remainder(
-        self, item_price_catalogue: ItemPriceCatalogue
+        self, item_prices: ItemPriceCatalogue
     ) -> None:
-        assert (
-            CheckoutSolution().checkout("AAAAAAAA", item_price_catalogue) == 200 + 130
-        )
-        assert (
-            CheckoutSolution().checkout("BBBBBBB", item_price_catalogue)
-            == 45 + 45 + 45 + 30
-        )
+        assert CheckoutSolution().checkout("AAAAAAAA", item_prices) == 200 + 130
+        assert CheckoutSolution().checkout("BBBBBBB", item_prices) == 45 + 45 + 45 + 30
 
     def test_checkout_complex_shopping_list(
-        self, item_price_catalogue: ItemPriceCatalogue
+        self, item_prices: ItemPriceCatalogue
     ) -> None:
         assert (
             CheckoutSolution().checkout(
                 "AAAAABBCCCDDDEEEFFFVVVRRRQRRR",
-                item_price_catalogue,
+                item_prices,
             )
             == 200 + 30 + 60 + 45 + 120 + 20 + 130 + 150 + 150
         )
         assert (
             CheckoutSolution().checkout(
                 "ARARAVFCRBVBQCCRDVFRADEREFDEA",
-                item_price_catalogue,
+                item_prices,
             )
             == 200 + 30 + 60 + 45 + 120 + 20 + 130 + 150 + 150
         )
 
     def test_return_minus_one_on_illegal_input(
-        self, item_price_catalogue: ItemPriceCatalogue
+        self, item_prices: ItemPriceCatalogue
     ) -> None:
-        assert CheckoutSolution().checkout("AAB2", item_price_catalogue) == -1
-        assert CheckoutSolution().checkout("123", item_price_catalogue) == -1
-        assert CheckoutSolution().checkout("!@#", item_price_catalogue) == -1
+        assert CheckoutSolution().checkout("AAB2", item_prices) == -1
+        assert CheckoutSolution().checkout("123", item_prices) == -1
+        assert CheckoutSolution().checkout("!@#", item_prices) == -1
 
     def test_buy_get_free_offer_when_free_item_not_present(
-        self, item_price_catalogue: ItemPriceCatalogue
+        self, item_prices: ItemPriceCatalogue
     ) -> None:
-        assert CheckoutSolution().checkout("EE", item_price_catalogue) == 80
-        assert CheckoutSolution().checkout("EEEE", item_price_catalogue) == 160
+        assert CheckoutSolution().checkout("EE", item_prices) == 80
+        assert CheckoutSolution().checkout("EEEE", item_prices) == 160
 
     def test_checkout_favor_customer_when_applying_offers(
-        self, item_price_catalogue: ItemPriceCatalogue
+        self, item_prices: ItemPriceCatalogue
     ) -> None:
         assert (
-            CheckoutSolution().checkout("AAAAAA", item_price_catalogue) == 200 + 50
+            CheckoutSolution().checkout("AAAAAA", item_prices) == 200 + 50
         )  # favour 5A for 200
         assert (
-            CheckoutSolution().checkout("BBEE", item_price_catalogue) == 80 + 30
+            CheckoutSolution().checkout("BBEE", item_prices) == 80 + 30
         )  # favour 1 B for free
         assert (
-            CheckoutSolution().checkout("BBBBEEE", item_price_catalogue) == 75 + 120
+            CheckoutSolution().checkout("BBBBEEE", item_prices) == 75 + 120
         )  # favor buy get B free
 
     def test_checkout_buy_multiple_of_item_get_another_free(
-        self, item_price_catalogue: ItemPriceCatalogue
+        self, item_prices: ItemPriceCatalogue
     ) -> None:
-        assert CheckoutSolution().checkout("FFF", item_price_catalogue) == 20
-        assert CheckoutSolution().checkout("FF", item_price_catalogue) == 20
-        assert CheckoutSolution().checkout("FFFFF", item_price_catalogue) == 40
-        assert CheckoutSolution().checkout("FFFFFF", item_price_catalogue) == 40
-        assert CheckoutSolution().checkout("UUUU", item_price_catalogue) == 120
-        assert CheckoutSolution().checkout("UFUFUFU", item_price_catalogue) == 140
+        assert CheckoutSolution().checkout("FFF", item_prices) == 20
+        assert CheckoutSolution().checkout("FF", item_prices) == 20
+        assert CheckoutSolution().checkout("FFFFF", item_prices) == 40
+        assert CheckoutSolution().checkout("FFFFFF", item_prices) == 40
+        assert CheckoutSolution().checkout("UUUU", item_prices) == 120
+        assert CheckoutSolution().checkout("UFUFUFU", item_prices) == 140
 
 
 @pytest.fixture
-def item_price_catalogue() -> ItemPriceCatalogue:
+def item_prices() -> ItemPriceCatalogue:
     return {
         "A": 50,
         "B": 30,
@@ -124,5 +115,6 @@ def item_price_catalogue() -> ItemPriceCatalogue:
         "Y": 10,
         "Z": 50,
     }
+
 
 

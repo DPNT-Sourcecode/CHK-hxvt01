@@ -1,42 +1,41 @@
 from collections import Counter
 
-from solutions.CHK.item_price_catalogue import ITEM_PRICES, UNIQUE_ITEMS
+from solutions.CHK.item_price_catalogue import ITEM_PRICES
 from solutions.CHK.special_offer import (
     PRIORITISED_SPECIAL_OFFERS,
     MultiBuyOffer,
     BuyAndGetFreeOffer,
 )
-
-from lib.solutions.CHK.item_price_catalogue import ItemPriceCatalogue
+from solutions.CHK.item_price_catalogue import ItemPriceCatalogue
 
 
 class CheckoutSolution:
     # skus = unicode string
-    def checkout(
-        self, skus: str, item_price_catalogue: ItemPriceCatalogue | None = None
-    ) -> int:
-        if item_price_catalogue is None:
-            item_price_catalogue = ITEM_PRICES
+    def checkout(self, skus: str, item_prices: ItemPriceCatalogue | None = None) -> int:
+        if item_prices is None:
+            item_prices = ITEM_PRICES
 
-        if not self._skus_valid(skus):
+        if not self._skus_valid(skus, item_prices):
             return -1
 
         shopping_list = Counter(skus)
         total, remaining_shopping_list = self._calculate_special_offers(shopping_list)
 
         for item, count in remaining_shopping_list.items():
-            item_price = item_price_catalogue[item]
+            item_price = item_prices[item]
             total += item_price * count
 
         return total
 
-    def _skus_valid(self, skus: str) -> bool:
+    def _skus_valid(self, skus: str, item_prices: ItemPriceCatalogue) -> bool:
         for sku in skus:
-            if sku not in UNIQUE_ITEMS:
+            if sku not in item_prices.keys():
                 return False
         return True
 
-    def _calculate_special_offers(self, shopping_list: dict) -> tuple[int, dict]:
+    def _calculate_special_offers(
+        self, shopping_list: dict, item_prices: ItemPriceCatalogue
+    ) -> tuple[int, dict]:
         remain_shop_list = shopping_list.copy()
         total = 0
         for offer in PRIORITISED_SPECIAL_OFFERS:
@@ -60,7 +59,7 @@ class CheckoutSolution:
                         remain_shop_list[offer.free_item] - num_free_items,
                     )
 
-                    total += ITEM_PRICES[item] * (remain_shop_list[item] - remainder)
+                    total += item_prices[item] * (remain_shop_list[item] - remainder)
                 else:
                     raise NotImplementedError(
                         f"Offertype {type(offer)} is not implemented."
@@ -68,5 +67,6 @@ class CheckoutSolution:
                 remain_shop_list[item] = remainder
 
         return total, remain_shop_list
+
 
 
