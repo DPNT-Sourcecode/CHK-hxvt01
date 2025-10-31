@@ -51,5 +51,9 @@ PRIORITISED_SPECIAL_OFFERS = [
     MultiBuyOffer(item="U", num_items_to_qualify=4, price=120),
     MultiBuyOffer(item="V", num_items_to_qualify=3, price=130),
     MultiBuyOffer(item="V", num_items_to_qualify=2, price=90),
+    GroupDiscountOffer(
+        items=["Z", "Y", "T", "S", "X"], num_items_to_qualify=3, price=45
+    ),
 ]
+
 

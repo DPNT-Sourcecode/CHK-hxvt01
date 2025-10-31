@@ -73,8 +73,8 @@ class CheckoutSolution:
         shop_list: dict[str, int],
     ) -> int:
         total = 0
-        if offer.items in shop_list:
-            item, item_count = offer.items, shop_list[offer.items]
+        if offer.item in shop_list:
+            item, item_count = offer.item, shop_list[offer.item]
 
             num_times_apply_offer, remainder = divmod(
                 item_count, offer.num_items_to_qualify
@@ -95,8 +95,8 @@ class CheckoutSolution:
         self, shopping_list: dict[str, int], offer: MultiBuyOffer
     ) -> int:
         total = 0
-        if offer.items in shopping_list:
-            item, item_count = offer.items, shopping_list[offer.items]
+        if offer.item in shopping_list:
+            item, item_count = offer.item, shopping_list[offer.item]
 
             num_times_apply_offer, remainder = divmod(
                 item_count, offer.num_items_to_qualify
@@ -106,4 +106,5 @@ class CheckoutSolution:
             shopping_list[item] = remainder
             total += offer.price * num_times_apply_offer
         return total
+
 

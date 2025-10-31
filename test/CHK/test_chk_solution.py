@@ -8,6 +8,8 @@ from solutions.CHK.special_offer import (
     BuyAndGetFreeOffer,
 )
 
+from lib.solutions.CHK.special_offer import GroupDiscountOffer
+
 
 class TestCheckout:
     def test_checkout_one_of_each_order_does_not_matter(
@@ -59,15 +61,15 @@ class TestCheckout:
     ) -> None:
         assert (
             CheckoutSolution().checkout(
-                "AAAAABBCCCDDDEEEFFFVVVRRRQRRR", item_prices, special_offers
+                "AAAAABBCCCDDDEEEFFFVVVRRRQRRRXYZ", item_prices, special_offers
             )
-            == 200 + 30 + 60 + 45 + 120 + 20 + 130 + 150 + 150
+            == 200 + 30 + 60 + 45 + 120 + 20 + 130 + 150 + 150 + 45
         )
         assert (
             CheckoutSolution().checkout(
-                "ARARAVFCRBVBQCCRDVFRADEREFDEA", item_prices, special_offers
+                "ARARAVFCZRBVXBQCCRYDVFRADEREFDEA", item_prices, special_offers
             )
-            == 200 + 30 + 60 + 45 + 120 + 20 + 130 + 150 + 150
+            == 200 + 30 + 60 + 45 + 120 + 20 + 130 + 150 + 150 + 45
         )
 
     def test_return_minus_one_on_illegal_input(
@@ -112,10 +114,13 @@ class TestCheckout:
 
     def test_checkout_group_discount_offer(self, item_prices, special_offers) -> None:
         assert CheckoutSolution().checkout("XYZ", item_prices, special_offers) == 45
-        assert CheckoutSolution().checkout("ZXXZY", item_prices, special_offers) == 45 + 17 + 17 # Favour Z in offer over X
-        assert CheckoutSolution().checkout("ZZZZYX", item_prices, special_offers) == 90 # Entire list is under offer
-
-
+        assert (
+            CheckoutSolution().checkout("ZXXZY", item_prices, special_offers)
+            == 45 + 17 + 17
+        )  # Favour Z in offer over X
+        assert (
+            CheckoutSolution().checkout("ZZZZYX", item_prices, special_offers) == 90
+        )  # Entire list is under offer
 
 
 @pytest.fixture
@@ -160,4 +165,6 @@ def special_offers() -> list[SpecialOffer]:
         MultiBuyOffer(item="U", num_items_to_qualify=4, price=120),
         MultiBuyOffer(item="V", num_items_to_qualify=3, price=130),
         MultiBuyOffer(item="V", num_items_to_qualify=2, price=90),
+        GroupDiscountOffer(items=["Z", "Y", "X"], num_items_to_qualify=3, price=45),
     ]
+
