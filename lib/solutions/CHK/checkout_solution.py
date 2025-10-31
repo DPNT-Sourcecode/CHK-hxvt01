@@ -1,4 +1,4 @@
-from collections import Counter
+from collections import Counter, defaultdict
 
 from solutions.CHK.item_price_catalogue import ITEM_PRICES
 from solutions.CHK.special_offer import (
@@ -114,4 +114,8 @@ class CheckoutSolution:
     def _apply_group_discount_offer(
         self, offer: GroupDiscountOffer, shopping_list: dict[str, int]
     ) -> int:
-        pass
+        while shopping_list != {}:
+            is_needed = offer.num_items_to_qualify
+            group_of_i = defaultdict(int)
+
+
