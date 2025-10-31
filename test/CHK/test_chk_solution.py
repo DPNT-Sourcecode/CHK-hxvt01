@@ -12,23 +12,19 @@ from solutions.CHK.special_offer import GroupDiscountOffer
 
 
 class TestCheckout:
-    def test_checkout_one_of_each_order_does_not_matter(
-        self, item_prices: ItemPriceCatalogue, special_offers: list[SpecialOffer]
+    @pytest.mark.parametrize("skus", ["ABCDL", "LDCBA", "LDBCA"])
+    def test_checkout_no_offers(
+        self,
+        item_prices: ItemPriceCatalogue,
+        special_offers: list[SpecialOffer],
+        skus: str,
     ) -> None:
         assert (
-            CheckoutSolution().checkout("ABCDL", item_prices, special_offers)
-            == 50 + 30 + 20 + 15 + 90
-        )
-        assert (
-            CheckoutSolution().checkout("LDCBA", item_prices, special_offers)
-            == 50 + 30 + 20 + 15 + 90
-        )
-        assert (
-            CheckoutSolution().checkout("LDBCA", item_prices, special_offers)
+            CheckoutSolution().checkout(skus, item_prices, special_offers)
             == 50 + 30 + 20 + 15 + 90
         )
 
-    def test_checkout_special_offers_order_does_not_matter(
+    def test_checkout_multi_buy_offer(
         self, item_prices: ItemPriceCatalogue, special_offers: list[SpecialOffer]
     ) -> None:
         assert (
@@ -171,4 +167,5 @@ def special_offers() -> list[SpecialOffer]:
         MultiBuyOffer(item="V", num_items_to_qualify=2, price=90),
         GroupDiscountOffer(items=["Z", "Y", "X"], num_items_to_qualify=3, price=45),
     ]
+
 
