@@ -106,11 +106,3 @@ class CheckoutSolution:
             shopping_list[item] = remainder
             total += offer.price * num_times_apply_offer
         return total
-
-
-
-
-
-
-
-

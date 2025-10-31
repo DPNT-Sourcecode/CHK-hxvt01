@@ -110,6 +110,13 @@ class TestCheckout:
             CheckoutSolution().checkout("UFUFUFU", item_prices, special_offers) == 140
         )
 
+    def test_checkout_group_discount_offer(self, item_prices, special_offers) -> None:
+        assert CheckoutSolution().checkout("XYZ", item_prices, special_offers) == 45
+        assert CheckoutSolution().checkout("ZXXZY", item_prices, special_offers) == 45 + 17 + 17 # Favour Z in offer over X
+        assert CheckoutSolution().checkout("ZZZZYX", item_prices, special_offers) == 90 # Entire list is under offer
+
+
+
 
 @pytest.fixture
 def item_prices() -> ItemPriceCatalogue:
@@ -129,6 +136,9 @@ def item_prices() -> ItemPriceCatalogue:
         "R": 50,
         "U": 40,
         "V": 50,
+        "X": 17,
+        "Y": 20,
+        "Z": 21,
     }
 
 
@@ -151,9 +161,3 @@ def special_offers() -> list[SpecialOffer]:
         MultiBuyOffer(item="V", num_items_to_qualify=3, price=130),
         MultiBuyOffer(item="V", num_items_to_qualify=2, price=90),
     ]
-
-
-
-
-
-
