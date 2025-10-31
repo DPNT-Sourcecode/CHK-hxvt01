@@ -10,7 +10,9 @@ from solutions.CHK.special_offer import (
 
 class CheckoutSolution:
     # skus = unicode string
-    def checkout(self, skus: str) -> int:
+    def checkout(
+        self, skus: str, item_price_catalogue: dict[str, int] | None = None
+    ) -> int:
         if not self._skus_valid(skus):
             return -1
 
@@ -61,3 +63,4 @@ class CheckoutSolution:
                 remain_shop_list[item] = remainder
 
         return total, remain_shop_list
+
