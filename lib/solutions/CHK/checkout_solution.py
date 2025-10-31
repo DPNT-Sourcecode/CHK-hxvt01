@@ -7,12 +7,17 @@ from solutions.CHK.special_offer import (
     BuyAndGetFreeOffer,
 )
 
+from lib.solutions.CHK.item_price_catalogue import ItemPriceCatalogue
+
 
 class CheckoutSolution:
     # skus = unicode string
     def checkout(
-        self, skus: str, item_price_catalogue: dict[str, int] | None = None
+        self, skus: str, item_price_catalogue: ItemPriceCatalogue | None = None
     ) -> int:
+        if item_price_catalogue is None:
+            item_price_catalogue = ITEM_PRICES
+
         if not self._skus_valid(skus):
             return -1
 
@@ -20,7 +25,7 @@ class CheckoutSolution:
         total, remaining_shopping_list = self._calculate_special_offers(shopping_list)
 
         for item, count in remaining_shopping_list.items():
-            item_price = ITEM_PRICES[item]
+            item_price = item_price_catalogue[item]
             total += item_price * count
 
         return total
@@ -63,4 +68,5 @@ class CheckoutSolution:
                 remain_shop_list[item] = remainder
 
         return total, remain_shop_list
+
 

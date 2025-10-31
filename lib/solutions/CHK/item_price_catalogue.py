@@ -1,3 +1,6 @@
+ItemPriceCatalogue = ItemPriceCatalogue
+
+
 ITEM_PRICES = {
     "A": 50,
     "B": 30,
@@ -27,3 +30,4 @@ ITEM_PRICES = {
     "Z": 50,
 }
 UNIQUE_ITEMS = ITEM_PRICES.keys()
+
