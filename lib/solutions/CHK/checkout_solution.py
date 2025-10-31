@@ -115,6 +115,3 @@ class CheckoutSolution:
         self, offer: GroupDiscountOffer, shopping_list: dict[str, int]
     ) -> int:
         pass
-
-
-
