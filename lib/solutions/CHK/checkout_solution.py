@@ -53,22 +53,30 @@ class CheckoutSolution:
         remain_shop_list = shopping_list.copy()
         total = 0
         for offer in special_offers:
-            if offer.item in remain_shop_list:
-                item, item_count = offer.item, remain_shop_list[offer.item]
+            if isinstance(offer, MultiBuyOffer):
+                if offer.item in remain_shop_list:
+                    item, item_count = offer.item, remain_shop_list[offer.item]
 
-                num_times_apply_offer, remainder = divmod(
-                    item_count, offer.num_items_to_qualify
-                )
-                if num_times_apply_offer:
-                    print(
-                        f"Applying special offer {num_times_apply_offer} times: {offer}"
+                    num_times_apply_offer, remainder = divmod(
+                        item_count, offer.num_items_to_qualify
                     )
+                    if num_times_apply_offer:
+                        print(
+                            f"Applying special offer {num_times_apply_offer} times: {offer}"
+                        )
+                    remain_shop_list[item] = remainder
+                    total += offer.price * num_times_apply_offer
+            elif isinstance(offer, BuyAndGetFreeOffer):
+                if offer.item in remain_shop_list:
+                    item, item_count = offer.item, remain_shop_list[offer.item]
 
-                if isinstance(offer, MultiBuyOffer):
-                    if offer.item in remain_shop_list:
-                        item, item_count = offer.item, remain_shop_list[offer.item]
-                        total += offer.price * num_times_apply_offer
-                elif isinstance(offer, BuyAndGetFreeOffer):
+                    num_times_apply_offer, remainder = divmod(
+                        item_count, offer.num_items_to_qualify
+                    )
+                    if num_times_apply_offer:
+                        print(
+                            f"Applying special offer {num_times_apply_offer} times: {offer}"
+                        )
                     num_free_items = 1 * num_times_apply_offer
                     remain_shop_list[offer.free_item] = max(
                         0,
@@ -76,13 +84,29 @@ class CheckoutSolution:
                     )
 
                     total += item_prices[item] * (remain_shop_list[item] - remainder)
-                else:
-                    raise NotImplementedError(
-                        f"Offertype {type(offer)} is not implemented."
-                    )
-                remain_shop_list[item] = remainder
+                    remain_shop_list[item] = remainder
+
+            else:
+                raise NotImplementedError(
+                    f"Offertype {type(offer)} is not implemented."
+                )
 
         return total, remain_shop_list
+
+    def _apply_multi_buy_offer(self, shopping_list: dict, offer: MultiBuyOffer) -> int:
+        total = 0
+        if offer.item in shopping_list:
+            item, item_count = offer.item, shopping_list[offer.item]
+
+            num_times_apply_offer, remainder = divmod(
+                item_count, offer.num_items_to_qualify
+            )
+            if num_times_apply_offer:
+                print(f"Applying special offer {num_times_apply_offer} times: {offer}")
+            shopping_list[item] = remainder
+            total += offer.price * num_times_apply_offer
+        return total
+
 
 
 
