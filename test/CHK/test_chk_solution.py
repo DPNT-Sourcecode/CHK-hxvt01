@@ -8,7 +8,7 @@ from solutions.CHK.special_offer import (
     BuyAndGetFreeOffer,
 )
 
-from lib.solutions.CHK.special_offer import GroupDiscountOffer
+from solutions.CHK.special_offer import GroupDiscountOffer
 
 
 class TestCheckout:
@@ -167,4 +167,5 @@ def special_offers() -> list[SpecialOffer]:
         MultiBuyOffer(item="V", num_items_to_qualify=2, price=90),
         GroupDiscountOffer(items=["Z", "Y", "X"], num_items_to_qualify=3, price=45),
     ]
+
 

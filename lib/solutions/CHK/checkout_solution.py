@@ -10,6 +10,8 @@ from solutions.CHK.item_price_catalogue import ItemPriceCatalogue
 
 from solutions.CHK.special_offer import SpecialOffer
 
+from solutions.CHK.special_offer import GroupDiscountOffer
+
 
 class CheckoutSolution:
     # skus = unicode string
@@ -59,6 +61,8 @@ class CheckoutSolution:
                 total += self._apply_buy_and_get_free_offer(
                     item_prices, offer, remain_shop_list
                 )
+            elif isinstance(offer, GroupDiscountOffer):
+                total += self._apply_group_discount_offer(offer, remain_shop_list)
             else:
                 raise NotImplementedError(
                     f"Offertype {type(offer)} is not implemented."
@@ -106,5 +110,11 @@ class CheckoutSolution:
             shopping_list[item] = remainder
             total += offer.price * num_times_apply_offer
         return total
+
+    def _apply_group_discount_offer(
+        self, offer: GroupDiscountOffer, shopping_list: dict[str, int]
+    ) -> int:
+        pass
+
 
 
