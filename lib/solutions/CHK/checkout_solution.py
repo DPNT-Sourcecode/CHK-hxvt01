@@ -116,30 +116,32 @@ class CheckoutSolution:
     ) -> int:
         total = 0
         while shopping_list != {}:
-            remaining_items_needed = offer.num_items_to_qualify
-            group_of_i = {}
+            num_items_to_qualify = offer.num_items_to_qualify
+            disc_group = {}
 
             for item in offer.items:
                 if item in shopping_list:
-                    num_i_to_include = min(remaining_items_needed, shopping_list[item])
-                    group_of_i[item] = num_i_to_include
-                    remaining_items_needed -= num_i_to_include
+                    num_i_to_include = min(num_items_to_qualify, shopping_list[item])
+                    disc_group[item] = num_i_to_include
+                    num_items_to_qualify -= num_i_to_include
 
-                    if remaining_items_needed == 0:
+                    if num_items_to_qualify == 0:
                         print(
-                            f"Applying special offer - '{offer}' on group '{group_of_i}'"
+                            f"Applying special offer - '{offer}' on group '{disc_group}'"
                         )
-                        for disc_item, disc_item_count in group_of_i.items():
+                        for disc_item, disc_item_count in disc_group.items():
                             shopping_list[disc_item] -= disc_item_count
                             if shopping_list[disc_item] == 0:
                                 del shopping_list[disc_item]
                         total += offer.price
                         break
-            if remaining_items_needed > 0:
+
+            if num_items_to_qualify > 0:
                 # deal could not be found
                 return total
 
         return total
+
 
 
 
