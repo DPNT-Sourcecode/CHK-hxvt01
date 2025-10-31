@@ -1,4 +1,4 @@
-from collections import Counter, defaultdict
+from collections import Counter
 
 from solutions.CHK.item_price_catalogue import ITEM_PRICES
 from solutions.CHK.special_offer import (
@@ -126,12 +126,20 @@ class CheckoutSolution:
                     remaining_items_needed -= num_i_to_include
 
                     if remaining_items_needed == 0:
-                        print(f"Applying special offer: {offer}")
+                        print(
+                            f"Applying special offer - '{offer}' on group '{group_of_i}'"
+                        )
                         for disc_item, disc_item_count in group_of_i.items():
-                            pass
+                            shopping_list[disc_item] -= disc_item_count
+                            if shopping_list[disc_item] == 0:
+                                del shopping_list[disc_item]
                         total += offer.price
+                        break
+            if remaining_items_needed > 0:
+                # deal could not be found
+                return total
 
-        
         return total
+
 
 
