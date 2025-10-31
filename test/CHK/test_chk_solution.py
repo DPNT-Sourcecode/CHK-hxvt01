@@ -47,40 +47,8 @@ class TestCheckout:
     ) -> None:
         assert CheckoutSolution().checkout(skus, item_prices, special_offers) == total
 
-    @pytest.mark.parametrize(
-        "skus",
-        ["AAAAABBCCCDDDEEEFFFVVVRRRQRRRXYZ", "ARARAVFCZRBVXBQCCRYDVFRADEREFDEA"],
-    )
-    def test_checkout_complex_shopping_list(
-        self, item_prices: ItemPriceCatalogue, special_offers: list[SpecialOffer]
-    ) -> None:
-        assert (
-            CheckoutSolution().checkout(
-                "AAAAABBCCCDDDEEEFFFVVVRRRQRRRXYZ", item_prices, special_offers
-            )
-            == 200 + 30 + 60 + 45 + 120 + 20 + 130 + 150 + 150 + 45
-        )
-        assert (
-            CheckoutSolution().checkout(
-                "ARARAVFCZRBVXBQCCRYDVFRADEREFDEA", item_prices, special_offers
-            )
-            == 200 + 30 + 60 + 45 + 120 + 20 + 130 + 150 + 150 + 45
-        )
-
-    def test_return_minus_one_on_illegal_input(
-        self, item_prices: ItemPriceCatalogue, special_offers: list[SpecialOffer]
-    ) -> None:
-        assert CheckoutSolution().checkout("AAB2", item_prices, special_offers) == -1
-        assert CheckoutSolution().checkout("123", item_prices, special_offers) == -1
-        assert CheckoutSolution().checkout("!@#", item_prices, special_offers) == -1
-
-    def test_buy_get_free_offer_when_free_item_not_present(
-        self, item_prices: ItemPriceCatalogue, special_offers: list[SpecialOffer]
-    ) -> None:
-        assert CheckoutSolution().checkout("EE", item_prices, special_offers) == 80
-        assert CheckoutSolution().checkout("EEEE", item_prices, special_offers) == 160
-
-    def test_checkout_favor_customer_when_applying_offers(
+    @pytest.mark.parametrize("skus,total", [("EE", 80), ("EEEE", 160)])
+    def test_checkout_multi_buy_offer_favor_customer(
         self, item_prices: ItemPriceCatalogue, special_offers: list[SpecialOffer]
     ) -> None:
         assert (
@@ -94,6 +62,28 @@ class TestCheckout:
             CheckoutSolution().checkout("BBBBEEE", item_prices, special_offers)
             == 75 + 120
         )  # favor buy get B free
+
+    @pytest.mark.parametrize(
+        "skus",
+        ["AAB2", "123", "!@#"],
+    )
+    def test_return_minus_one_on_illegal_input(
+        self,
+        item_prices: ItemPriceCatalogue,
+        special_offers: list[SpecialOffer],
+        skus: str,
+    ) -> None:
+        assert CheckoutSolution().checkout(skus, item_prices, special_offers) == -1
+
+    @pytest.mark.parametrize("skus,total", [("EE", 80), ("EEEE", 160)])
+    def test_buy_get_free_offer_when_free_item_not_present(
+        self,
+        item_prices: ItemPriceCatalogue,
+        special_offers: list[SpecialOffer],
+        skus: str,
+        total: int,
+    ) -> None:
+        assert CheckoutSolution().checkout(skus, item_prices, special_offers) == total
 
     def test_checkout_buy_multiple_of_item_get_another_free(
         self, item_prices: ItemPriceCatalogue, special_offers: list[SpecialOffer]
@@ -119,6 +109,21 @@ class TestCheckout:
         assert (
             CheckoutSolution().checkout("ZAZHZZLYX", item_prices, special_offers)
             == 90 + 50 + 10 + 90
+        )
+
+    @pytest.mark.parametrize(
+        "skus",
+        ["AAAAABBCCCDDDEEEFFFVVVRRRQRRRXYZ", "ARARAVFCZRBVXBQCCRYDVFRADEREFDEA"],
+    )
+    def test_checkout_complex_shopping_list(
+        self,
+        item_prices: ItemPriceCatalogue,
+        special_offers: list[SpecialOffer],
+        skus: str,
+    ) -> None:
+        assert (
+            CheckoutSolution().checkout(skus, item_prices, special_offers)
+            == 200 + 30 + 60 + 45 + 120 + 20 + 130 + 150 + 150 + 45
         )
 
 
@@ -166,6 +171,7 @@ def special_offers() -> list[SpecialOffer]:
         MultiBuyOffer(item="V", num_items_to_qualify=2, price=90),
         GroupDiscountOffer(items=["Z", "Y", "X"], num_items_to_qualify=3, price=45),
     ]
+
 
 
 
