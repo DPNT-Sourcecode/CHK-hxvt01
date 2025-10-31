@@ -47,21 +47,19 @@ class TestCheckout:
     ) -> None:
         assert CheckoutSolution().checkout(skus, item_prices, special_offers) == total
 
-    @pytest.mark.parametrize("skus,total", [("EE", 80), ("EEEE", 160)])
+    @pytest.mark.parametrize(
+        "skus,total",
+        [("AAAAAA", 200 + 50), ("BBEE", 80 + 30), ("BBBBEEE", 75 + 120)],
+        ids=["Favour 5A for 200", "Favour 1B for Free", "Favour buy get B free"],
+    )
     def test_checkout_multi_buy_offer_favor_customer(
-        self, item_prices: ItemPriceCatalogue, special_offers: list[SpecialOffer]
+        self,
+        item_prices: ItemPriceCatalogue,
+        special_offers: list[SpecialOffer],
+        skus: str,
+        total: int,
     ) -> None:
-        assert (
-            CheckoutSolution().checkout("AAAAAA", item_prices, special_offers)
-            == 200 + 50
-        )  # favour 5A for 200
-        assert (
-            CheckoutSolution().checkout("BBEE", item_prices, special_offers) == 80 + 30
-        )  # favour 1 B for free
-        assert (
-            CheckoutSolution().checkout("BBBBEEE", item_prices, special_offers)
-            == 75 + 120
-        )  # favor buy get B free
+        assert CheckoutSolution().checkout(skus, item_prices, special_offers) == total
 
     @pytest.mark.parametrize(
         "skus",
@@ -85,8 +83,19 @@ class TestCheckout:
     ) -> None:
         assert CheckoutSolution().checkout(skus, item_prices, special_offers) == total
 
+    @pytest.mark.parametrize(
+        "skus,total",
+        [
+            ("FFF", 20),
+            ("FF", 20),
+            ("FFFFF", 40),
+            ("FFFFFF", 40),
+            ("UUUU", 120),
+
+        ],
+    )
     def test_checkout_buy_multiple_of_item_get_another_free(
-        self, item_prices: ItemPriceCatalogue, special_offers: list[SpecialOffer]
+        self, item_prices: ItemPriceCatalogue, special_offers: list[SpecialOffer], skus: str, total: int
     ) -> None:
         assert CheckoutSolution().checkout("FFF", item_prices, special_offers) == 20
         assert CheckoutSolution().checkout("FF", item_prices, special_offers) == 20
@@ -171,7 +180,3 @@ def special_offers() -> list[SpecialOffer]:
         MultiBuyOffer(item="V", num_items_to_qualify=2, price=90),
         GroupDiscountOffer(items=["Z", "Y", "X"], num_items_to_qualify=3, price=45),
     ]
-
-
-
-
