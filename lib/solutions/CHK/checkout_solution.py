@@ -55,18 +55,32 @@ class CheckoutSolution:
         remain_shop_list = shopping_list.copy()
         total = 0
         for offer in special_offers:
-            if isinstance(offer, MultiBuyOffer):
-                total += self._apply_multi_buy_offer(remain_shop_list, offer)
-            elif isinstance(offer, BuyAndGetFreeOffer):
-                total += self._apply_buy_and_get_free_offer(
+            match offer:
+                case MultiBuyOffer():
+                    total += self._apply_multi_buy_offer(remain_shop_list, offer)
+                case BuyAndGetFreeOffer():
+                    total += total += self._apply_buy_and_get_free_offer(
                     item_prices, offer, remain_shop_list
                 )
-            elif isinstance(offer, GroupDiscountOffer):
-                total += self._apply_group_discount_offer(offer, remain_shop_list)
-            else:
-                raise NotImplementedError(
-                    f"Offertype {type(offer)} is not implemented."
-                )
+                case GroupDiscountOffer():
+                    total += self._apply_group_discount_offer(remain_shop_list, offer)
+                case _:
+                    raise NotImplementedError(
+                        f"Offertype {type(offer)} is not implemented."
+                    )
+
+            # if isinstance(offer, MultiBuyOffer):
+            #     total += self._apply_multi_buy_offer(remain_shop_list, offer)
+            # elif isinstance(offer, BuyAndGetFreeOffer):
+            #     total += self._apply_buy_and_get_free_offer(
+            #         item_prices, offer, remain_shop_list
+            #     )
+            # elif isinstance(offer, GroupDiscountOffer):
+            #     total += self._apply_group_discount_offer(offer, remain_shop_list)
+            # else:
+            #     raise NotImplementedError(
+            #         f"Offertype {type(offer)} is not implemented."
+            #     )
 
         return total, remain_shop_list
 
@@ -121,14 +135,17 @@ class CheckoutSolution:
 
             for item in offer.items:
                 if item in shopping_list:
-                    num_i_to_include = min(num_items_to_qualify, shopping_list[item])
-                    disc_group[item] = num_i_to_include
-                    num_items_to_qualify -= num_i_to_include
+                    num_items_to_include = min(
+                        num_items_to_qualify, shopping_list[item]
+                    )
+                    disc_group[item] = num_items_to_include
+                    num_items_to_qualify -= num_items_to_include
 
                     if num_items_to_qualify == 0:
                         print(
                             f"Applying special offer - '{offer}' on group '{disc_group}'"
                         )
+                        # Remove group items from shopping list
                         for disc_item, disc_item_count in disc_group.items():
                             shopping_list[disc_item] -= disc_item_count
                             if shopping_list[disc_item] == 0:
@@ -141,6 +158,7 @@ class CheckoutSolution:
                 return total
 
         return total
+
 
 
 
