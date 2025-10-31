@@ -19,7 +19,9 @@ class CheckoutSolution:
             return -1
 
         shopping_list = Counter(skus)
-        total, remaining_shopping_list = self._calculate_special_offers(shopping_list)
+        total, remaining_shopping_list = self._calculate_special_offers(
+            shopping_list, item_prices
+        )
 
         for item, count in remaining_shopping_list.items():
             item_price = item_prices[item]
@@ -67,6 +69,7 @@ class CheckoutSolution:
                 remain_shop_list[item] = remainder
 
         return total, remain_shop_list
+
 
 
 
