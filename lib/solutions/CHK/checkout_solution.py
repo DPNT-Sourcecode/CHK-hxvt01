@@ -59,28 +59,15 @@ class CheckoutSolution:
                 case MultiBuyOffer():
                     total += self._apply_multi_buy_offer(remain_shop_list, offer)
                 case BuyAndGetFreeOffer():
-                    total += total += self._apply_buy_and_get_free_offer(
-                    item_prices, offer, remain_shop_list
-                )
+                    total += self._apply_buy_and_get_free_offer(
+                        item_prices, offer, remain_shop_list
+                    )
                 case GroupDiscountOffer():
-                    total += self._apply_group_discount_offer(remain_shop_list, offer)
+                    total += self._apply_group_discount_offer(offer, remain_shop_list)
                 case _:
                     raise NotImplementedError(
                         f"Offertype {type(offer)} is not implemented."
                     )
-
-            # if isinstance(offer, MultiBuyOffer):
-            #     total += self._apply_multi_buy_offer(remain_shop_list, offer)
-            # elif isinstance(offer, BuyAndGetFreeOffer):
-            #     total += self._apply_buy_and_get_free_offer(
-            #         item_prices, offer, remain_shop_list
-            #     )
-            # elif isinstance(offer, GroupDiscountOffer):
-            #     total += self._apply_group_discount_offer(offer, remain_shop_list)
-            # else:
-            #     raise NotImplementedError(
-            #         f"Offertype {type(offer)} is not implemented."
-            #     )
 
         return total, remain_shop_list
 
@@ -158,6 +145,7 @@ class CheckoutSolution:
                 return total
 
         return total
+
 
 
 
