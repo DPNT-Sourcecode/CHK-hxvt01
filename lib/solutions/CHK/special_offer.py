@@ -2,14 +2,13 @@ from abc import ABC
 
 
 class SpecialOffer(ABC):
-    def __init__(self, item: str, count_of_items: int) -> None:
-        self.item = item
-        self.num_items_to_qualify = count_of_items
+    pass
 
 
 class MultiBuyOffer(SpecialOffer):
     def __init__(self, item: str, num_items_to_qualify: int, price: int) -> None:
-        super().__init__(item, num_items_to_qualify)
+        self.item = item
+        self.num_items_to_qualify = num_items_to_qualify
         self.price = price
 
     def __str__(self) -> str:
@@ -18,11 +17,22 @@ class MultiBuyOffer(SpecialOffer):
 
 class BuyAndGetFreeOffer(SpecialOffer):
     def __init__(self, item: str, num_items_to_qualify: int, free_item: str) -> None:
-        super().__init__(item, num_items_to_qualify)
+        self.item = item
+        self.num_items_to_qualify = num_items_to_qualify
         self.free_item = free_item
 
     def __str__(self) -> str:
         return f"{self.num_items_to_qualify}{self.item} get one {self.free_item} free"
+
+
+class GroupDiscountOffer(SpecialOffer):
+    def __init__(self, items: list[str], num_items_to_qualify: int, price: int) -> None:
+        self.items = items
+        self.num_items_to_qualify = num_items_to_qualify
+        self.price = price
+
+    def __str__(self) -> str:
+        return f"buy any {self.num_items_to_qualify} of {list(self.items)} for {self.price}"
 
 
 PRIORITISED_SPECIAL_OFFERS = [
@@ -42,3 +52,4 @@ PRIORITISED_SPECIAL_OFFERS = [
     MultiBuyOffer(item="V", num_items_to_qualify=3, price=130),
     MultiBuyOffer(item="V", num_items_to_qualify=2, price=90),
 ]
+
