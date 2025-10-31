@@ -29,7 +29,7 @@ class CheckoutSolution:
 
         shopping_list = Counter(skus)
         total, remaining_shopping_list = self._calculate_special_offers(
-            shopping_list, item_prices
+            shopping_list, item_prices, special_offers
         )
 
         for item, count in remaining_shopping_list.items():
@@ -45,11 +45,14 @@ class CheckoutSolution:
         return True
 
     def _calculate_special_offers(
-        self, shopping_list: dict, item_prices: ItemPriceCatalogue
+        self,
+        shopping_list: dict,
+        item_prices: ItemPriceCatalogue,
+        special_offers: list[SpecialOffer],
     ) -> tuple[int, dict]:
         remain_shop_list = shopping_list.copy()
         total = 0
-        for offer in PRIORITISED_SPECIAL_OFFERS:
+        for offer in special_offers:
             if offer.item in remain_shop_list:
                 item, item_count = offer.item, remain_shop_list[offer.item]
 
@@ -62,7 +65,9 @@ class CheckoutSolution:
                     )
 
                 if isinstance(offer, MultiBuyOffer):
-                    total += offer.price * num_times_apply_offer
+                    if offer.item in remain_shop_list:
+                        item, item_count = offer.item, remain_shop_list[offer.item]
+                        total += offer.price * num_times_apply_offer
                 elif isinstance(offer, BuyAndGetFreeOffer):
                     num_free_items = 1 * num_times_apply_offer
                     remain_shop_list[offer.free_item] = max(
@@ -78,6 +83,7 @@ class CheckoutSolution:
                 remain_shop_list[item] = remainder
 
         return total, remain_shop_list
+
 
 
 

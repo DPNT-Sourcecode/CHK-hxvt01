@@ -59,15 +59,13 @@ class TestCheckout:
     ) -> None:
         assert (
             CheckoutSolution().checkout(
-                "AAAAABBCCCDDDEEEFFFVVVRRRQRRR",
-                item_prices,
+                "AAAAABBCCCDDDEEEFFFVVVRRRQRRR", item_prices, special_offers
             )
             == 200 + 30 + 60 + 45 + 120 + 20 + 130 + 150 + 150
         )
         assert (
             CheckoutSolution().checkout(
-                "ARARAVFCRBVBQCCRDVFRADEREFDEA",
-                item_prices,
+                "ARARAVFCRBVBQCCRDVFRADEREFDEA", item_prices, special_offers
             )
             == 200 + 30 + 60 + 45 + 120 + 20 + 130 + 150 + 150
         )
@@ -153,6 +151,7 @@ def special_offers() -> list[SpecialOffer]:
         MultiBuyOffer(item="V", num_items_to_qualify=3, price=130),
         MultiBuyOffer(item="V", num_items_to_qualify=2, price=90),
     ]
+
 
 
 

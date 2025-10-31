@@ -33,7 +33,7 @@ PRIORITISED_SPECIAL_OFFERS = [
     MultiBuyOffer(item="F", num_items_to_qualify=3, price=20),
     MultiBuyOffer(item="H", num_items_to_qualify=10, price=80),
     MultiBuyOffer(item="H", num_items_to_qualify=5, price=45),
-    MultiBuyOffer(item="K", num_items_to_qualify=2, price=150),
+    MultiBuyOffer(item="K", num_items_to_qualify=2, price=120),
     BuyAndGetFreeOffer(item="N", num_items_to_qualify=3, free_item="M"),
     MultiBuyOffer(item="P", num_items_to_qualify=5, price=200),
     BuyAndGetFreeOffer(item="R", num_items_to_qualify=3, free_item="Q"),
@@ -42,3 +42,4 @@ PRIORITISED_SPECIAL_OFFERS = [
     MultiBuyOffer(item="V", num_items_to_qualify=3, price=130),
     MultiBuyOffer(item="V", num_items_to_qualify=2, price=90),
 ]
+
