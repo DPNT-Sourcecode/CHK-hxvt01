@@ -91,34 +91,41 @@ class TestCheckout:
             ("FFFFF", 40),
             ("FFFFFF", 40),
             ("UUUU", 120),
-
+            ("UFUFUFU", 140),
         ],
     )
     def test_checkout_buy_multiple_of_item_get_another_free(
-        self, item_prices: ItemPriceCatalogue, special_offers: list[SpecialOffer], skus: str, total: int
+        self,
+        item_prices: ItemPriceCatalogue,
+        special_offers: list[SpecialOffer],
+        skus: str,
+        total: int,
     ) -> None:
-        assert CheckoutSolution().checkout("FFF", item_prices, special_offers) == 20
-        assert CheckoutSolution().checkout("FF", item_prices, special_offers) == 20
-        assert CheckoutSolution().checkout("FFFFF", item_prices, special_offers) == 40
-        assert CheckoutSolution().checkout("FFFFFF", item_prices, special_offers) == 40
-        assert CheckoutSolution().checkout("UUUU", item_prices, special_offers) == 120
-        assert (
-            CheckoutSolution().checkout("UFUFUFU", item_prices, special_offers) == 140
-        )
+        assert CheckoutSolution().checkout(skus, item_prices, special_offers) == total
 
-    def test_checkout_group_discount_offer(self, item_prices, special_offers) -> None:
-        assert CheckoutSolution().checkout("XYZ", item_prices, special_offers) == 45
-        assert (
-            CheckoutSolution().checkout("ZXXZY", item_prices, special_offers)
-            == 45 + 17 + 17
-        )  # Favour Z in offer over X
-        assert (
-            CheckoutSolution().checkout("ZZZZYX", item_prices, special_offers) == 90
-        )  # Entire list is under offer
-        assert (
-            CheckoutSolution().checkout("ZAZHZZLYX", item_prices, special_offers)
-            == 90 + 50 + 10 + 90
-        )
+    @pytest.mark.parametrize(
+        "skus,total",
+        [
+            ("XYZ", 45),
+            ("ZXXZY", 45 + 17 + 17),
+            ("ZZZZYX", 90),
+            ("ZAZHZZLYX", 90 + 50 + 10 + 90),
+        ],
+        ids=[
+            "Apply once on whole shopping list",
+            "Favour Z in offer over X",
+            "Entire list is under offer",
+            "Apply with other none related items",
+        ],
+    )
+    def test_checkout_group_discount_offer(
+        self,
+        item_prices: ItemPriceCatalogue,
+        special_offers: list[SpecialOffer],
+        skus: str,
+        total: int,
+    ) -> None:
+        assert CheckoutSolution().checkout(skus, item_prices, special_offers) == total
 
     @pytest.mark.parametrize(
         "skus",
@@ -180,3 +187,4 @@ def special_offers() -> list[SpecialOffer]:
         MultiBuyOffer(item="V", num_items_to_qualify=2, price=90),
         GroupDiscountOffer(items=["Z", "Y", "X"], num_items_to_qualify=3, price=45),
     ]
+
